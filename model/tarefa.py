@@ -1,3 +1,4 @@
+from ast import Param
 from database import Database
 
 class Tarefa:
@@ -30,6 +31,14 @@ class Tarefa:
         db.conectar()
         sql = "delete from tarefa where id = %s"
         params = (self.id,)
+        db.executar(sql, params)
+        db.desconectar()
+    
+    def atualizarTarefa(self):
+        db = Database()
+        db.conectar()
+        sql = "update tarefa set titulo = 'nao sei o que', data_conclusao = 2024-08-04 where id = 1"
+        params = (self.id, self.titulo, self.data_conclusao)
         db.executar(sql, params)
         db.desconectar()
 
