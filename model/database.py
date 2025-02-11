@@ -63,8 +63,4 @@ class Database:
             print(f'Erro de execução: {e}')
             return None
 
-db = Database()
-db.conectar()
-db.consultar('select * from tarefa')
-db.executar('insert into tarefa (titulo) values ("Teste de tarefas")')
-db.desconectar()
+
