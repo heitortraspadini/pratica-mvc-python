@@ -1,7 +1,36 @@
-from flask import Flask, render_template
-
+from flask import Flask, render_template, request, url_for, redirect
+from model.tarefa import Tarefa
+ 
 app = Flask(__name__)
-
-@app.route("/")
-def ciencia():
-    return render_template("index.html", title = "Agenda")
+ 
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        titulo = request.form["titulo"]
+        data_conclusao = request.form["data_conclusao"]
+        tarefa = Tarefa(titulo = titulo, data_conclusao = data_conclusao)
+        tarefa.salvarTarefa()
+        return redirect(url_for("index"))
+ 
+    tarefas = Tarefa.listarTarefa()
+    return render_template("index.html", tarefas=tarefas, title="Minhas Tarefas")
+ 
+@app.route("/delete/<int:idTarefa>")
+def delete(idTarefa):
+    Tarefa.apagarTarefa(idTarefa)
+    return redirect(url_for("index"))
+ 
+@app.route("/edit/<int:idTarefa>", methods=["GET", "POST"])
+def edit(idTarefa):
+    if request.method == "POST":
+        # Atualizar a tarefa no banco de dados
+        titulo = request.form["titulo"]
+        data_conclusao = request.form["data_conclusao"]
+        tarefa = Tarefa(titulo=titulo, data_conclusao=data_conclusao, id=idTarefa)
+        tarefa.atualizarTarefa()
+        return redirect(url_for("index"))
+ 
+    # Buscar a tarefa pelo ID para exibir no formulário
+    tarefa = Tarefa.buscarPorId(idTarefa)
+    return render_template("edit.html", tarefa=tarefa, title="Editar Tarefa")
+ 
