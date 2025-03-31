@@ -1,7 +1,7 @@
 import mysql.connector as mc #Biblioteca do conector do MySQL
 from mysql.connector import Error #Importando a classe Error para tratar as mensagens de erro do código
 from dotenv import load_dotenv #Importando a função load_dotenv
-from os import getenv#Importando a função getenv
+from os import getenv #Importando a função getenv
 
 class Database:
     def __init__(self):
@@ -62,5 +62,7 @@ class Database:
         except Error as e:
             print(f'Erro de execução: {e}')
             return None
+
+
 
 
