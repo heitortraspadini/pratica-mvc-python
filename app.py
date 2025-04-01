@@ -9,15 +9,15 @@ def index():
         titulo = request.form["titulo"]
         data_conclusao = request.form["data_conclusao"]
         tarefa = Tarefa(titulo = titulo, data_conclusao = data_conclusao)
-        tarefa.salvarTarefa()
+        tarefa.salvar_tarefa()
         return redirect(url_for("index"))
  
-    tarefas = Tarefa.listarTarefa()
+    tarefas = Tarefa.listar_tarefa()
     return render_template("index.html", tarefas=tarefas, title="Minhas Tarefas")
  
 @app.route("/delete/<int:idTarefa>")
 def delete(idTarefa):
-    Tarefa.apagarTarefa(idTarefa)
+    Tarefa.apagar_tarefa(idTarefa)
     return redirect(url_for("index"))
  
 @app.route("/edit/<int:idTarefa>", methods=["GET", "POST"])
@@ -27,10 +27,6 @@ def edit(idTarefa):
         titulo = request.form["titulo"]
         data_conclusao = request.form["data_conclusao"]
         tarefa = Tarefa(titulo=titulo, data_conclusao=data_conclusao, id=idTarefa)
-        tarefa.atualizarTarefa()
+        tarefa.atualizar_tarefa()
         return redirect(url_for("index"))
- 
-    # Buscar a tarefa pelo ID para exibir no formulário
-    tarefa = Tarefa.buscarPorId(idTarefa)
-    return render_template("edit.html", tarefa=tarefa, title="Editar Tarefa")
- 
+    
