@@ -4,7 +4,7 @@
     <form method="POST">
         <input type="text" name="titulo" id="titulo" placeholder="Título da tarefa" required>
         <input type="date" name="data_conclusao" id="data_conclusao">
-        <button type="submit">Adicionar</button>
+        <button type="submit">{{'Salvar' if resultado else 'Adicionar'}}</button>
     </form>
  
     <ul>
@@ -12,15 +12,7 @@
             <li>
                 {{ tarefa.id }} - {{ tarefa.titulo }} - {{ tarefa.data_conclusao }}
                 <a href="{{ url_for('delete', idTarefa=tarefa.id) }}">Apagar</a>
-                <a href="#" onclick="document.getElementById('edit-form-{{ tarefa.id }}').style.display = 'block';">Editar</a>
- 
-                <!-- Formulário de edição inline -->
-                <form id="edit-form-{{ tarefa.id }}" method="POST" action="{{ url_for('edit', idTarefa=tarefa.id) }}" style="display: none; margin-top: 10px;">
-                    <input type="text" name="titulo" value="{{ tarefa.titulo }}" required>
-                    <input type="date" name="data_conclusao" value="{{ tarefa.data_conclusao }}">
-                    <button type="submit">Salvar</button>
-                    <button type="button" onclick="document.getElementById('edit-form-{{ tarefa.id }}').style.display = 'none';">Cancelar</button>
-                </form>
+                <a href="{{ url_for('update', idTarefa=tarefa.id) }}" >Editar</a>
             </li>
         {% endfor %}
     </ul>

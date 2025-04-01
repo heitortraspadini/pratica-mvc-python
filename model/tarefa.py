@@ -1,3 +1,4 @@
+import datetime
 from model.database import Database
  
 class Tarefa:
@@ -51,12 +52,15 @@ class Tarefa:
         db = Database()
         db.conectar()
  
-        sql = "SELECT id, titulo, data_conclusao FROM tarefa WHERE id = %s"
+        sql = "SELECT id, titulo, data_conclusao FROM tarefa WHERE id = %s LIMIT 1"
         params = (idTarefa,)
         resultado = db.consultar(sql, params)
         db.desconectar()
  
         if resultado:
+            data_formatada = (
+                resultado[0]["data_conclusao"].strftime("%Y-%m-%d") if isinstance(resultado[0]["data_conclusao"], datetime) else resultado["data_conclusao"]
+            )
             id, titulo, data_conclusao = resultado[0]["id"], resultado[0]["titulo"], resultado[0]["data_conclusao"]
-            return Tarefa(titulo=titulo, data_conclusao=data_conclusao, id=id)
+            return Tarefa(titulo=titulo, data_conclusao=data_formatada, id=id)
         return None

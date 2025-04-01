@@ -1,3 +1,4 @@
+from unittest.runner import _ResultClassType
 from flask import Flask, render_template, request, url_for, redirect
 from model.tarefa import Tarefa
  
@@ -20,7 +21,7 @@ def delete(idTarefa):
     Tarefa.apagar_tarefa(idTarefa)
     return redirect(url_for("index"))
  
-@app.route("/edit/<int:idTarefa>", methods=["GET", "POST"])
+@app.route("/update/<int:idTarefa>", methods=["GET", "POST"])
 def edit(idTarefa):
     if request.method == "POST":
         # Atualizar a tarefa no banco de dados
@@ -29,4 +30,11 @@ def edit(idTarefa):
         tarefa = Tarefa(titulo=titulo, data_conclusao=data_conclusao, id=idTarefa)
         tarefa.atualizar_tarefa()
         return redirect(url_for("index"))
+    
+    tarefa = Tarefa.buscar_por_id(idTarefa)
+    return render_template(
+        "update.html", 
+        tarefa=tarefa, 
+        title="Editando tarefa | Minhas Tarefas"
+        )
     
